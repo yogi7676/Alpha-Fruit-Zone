@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.alphauser">
    <application
-        android:label="alphauser"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Alpha Fruit Zone"
+        android:icon="@drawable/icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
