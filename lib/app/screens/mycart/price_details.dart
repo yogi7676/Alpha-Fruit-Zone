@@ -1,11 +1,14 @@
 import 'package:alphauser/app/constants/controllers.dart';
+import 'package:alphauser/app/models/cart_item_model.dart';
 import 'package:alphauser/app/widgets/custom_text.dart';
 import 'package:alphauser/app/widgets/space.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PriceDetails extends StatelessWidget {
-  const PriceDetails({Key? key}) : super(key: key);
+  const PriceDetails({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,8 @@ class PriceDetails extends StatelessWidget {
               children: [
                 Obx(
                   () => CustomText(
-                    text: '\u20B9 ${(cartController.totalCartPrice.value + 99.0)}',
+                    text:
+                        '\u20B9 ${(cartController.totalCartPrice.value + 99.0)}',
                     size: 16,
                     weight: FontWeight.bold,
                   ),
@@ -44,9 +48,10 @@ class PriceDetails extends StatelessWidget {
           Obx(() => SizedBox(
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: (cartController.totalCartPrice.value + 99.0) < 400
-                        ? null
-                        : () {},
+                    onPressed:
+                        (cartController.totalCartPrice.value + 99.0) < 400
+                            ? null
+                            : () => userController.placeOrder(),
                     child: const Text('Place Order')),
               ))
         ],

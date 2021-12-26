@@ -59,7 +59,7 @@ class CartItemModel {
     measure = data[MEASURE];
   }
 
-  Map toFirestore() => {
+ /* Map toFirestore() => {
         VENDORIMAGE: vendorImage,
         PRODUCTNAME: productName,
         QUANTITY: quantity,
@@ -73,7 +73,25 @@ class CartItemModel {
         SELLINGID: sellingId,
         VENDORID: vendorID,
         MEASURE: measure
-      };
+      };*/
+
+  Map<String, dynamic> toMap() {
+    return {
+      VENDORIMAGE: vendorImage,
+      PRODUCTNAME: productName,
+      QUANTITY: quantity,
+      PRICEDETAILS: priceDetails,
+      UNITS: units,
+      COST: cost,
+      PRODUCT_ID: productId,
+      BUSINESS_NAME: businessname,
+      PRODUCTPRICE: productPrice,
+      VENDORADDRESS: vendorAddress,
+      SELLINGID: sellingId,
+      VENDORID: vendorID,
+      MEASURE: measure
+    };
+  }
 
   @override
   String toString() {

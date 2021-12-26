@@ -20,6 +20,10 @@ class CartController extends GetxController {
     ever(userController.userModel, changeCartTotalPrice);
   }
 
+  void place() {
+
+
+  }
   void addProductToCart(Product product, Selling selling, VendorModel vendor) {
     String priceDetails = selling.quantity == 1
         ? ''
@@ -55,7 +59,7 @@ class CartController extends GetxController {
   void removeCartItem(CartItemModel cartItem) {
     try {
       userController.updateUserData({
-        "myCart": FieldValue.arrayRemove([cartItem.toFirestore()])
+        "myCart": FieldValue.arrayRemove([cartItem.toMap()])
       });
     } catch (e) {
       showErrorSnackBar("Cannot remove this item");
@@ -88,7 +92,7 @@ class CartController extends GetxController {
       removeCartItem(item);
       item.units = item.units! - 1;
       userController.updateUserData({
-        "myCart": FieldValue.arrayUnion([item.toFirestore()])
+        "myCart": FieldValue.arrayUnion([item.toMap()])
       });
     }
   }
@@ -97,7 +101,7 @@ class CartController extends GetxController {
     removeCartItem(item);
     item.units = item.units! + 1;
     userController.updateUserData({
-      "myCart": FieldValue.arrayUnion([item.toFirestore()])
+      "myCart": FieldValue.arrayUnion([item.toMap()])
     });
   }
 

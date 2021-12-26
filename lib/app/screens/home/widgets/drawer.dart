@@ -43,7 +43,8 @@ class MyDrawer extends StatelessWidget {
                                     break;
                                   case 2:
                                     userController.signout();
-                                    exit(1);
+                                   // exit(1);
+                                   break;
                                 }
                               },
                               leading: Icon(drawerButtons[index].icon),

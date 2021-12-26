@@ -1,8 +1,11 @@
+import 'package:alphauser/app/constants/controllers.dart';
 import 'package:alphauser/app/constants/firebase.dart';
 import 'package:alphauser/app/models/user.dart';
 import 'package:alphauser/app/screens/home/home.dart';
+import 'package:alphauser/app/widgets/custom_snackbars.dart';
 import 'package:alphauser/app/widgets/showLoading.dart';
 import 'package:alphauser/app/screens/auth/phone_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -85,10 +88,22 @@ class UserController extends GetxController {
       dismissLoadingWidget();
       Get.snackbar('Signin Failed', 'Enter a valid otp');
     }).whenComplete(() async {
-      await firebaseFirestore
+      DocumentSnapshot snap = await firebaseFirestore
           .collection('users')
           .doc(getCurrentUser()!.uid)
-          .set({'myCart': []});
+          .get();
+
+      if (!snap.exists) {
+        await firebaseFirestore
+            .collection('users')
+            .doc(getCurrentUser()!.uid)
+            .set({'myCart': [], 'myOrders': []});
+      } else {
+        await firebaseFirestore
+            .collection('users')
+            .doc(getCurrentUser()!.uid)
+            .set({'myCart': []});
+      }
     });
   }
 
@@ -106,4 +121,24 @@ class UserController extends GetxController {
       .doc(firebaseUser.value!.uid)
       .snapshots()
       .map((snapshot) => UserModel.fromSnapshot(snapshot));
+
+  void placeOrder() async {
+    for (var item in userModel.value.cart!) {
+      await firebaseFirestore
+          .collection('users')
+          .doc(getCurrentUser()!.uid)
+          .update({
+        "myOrders": FieldValue.arrayUnion([item.toMap()])
+      }).then((value) {
+        firebaseFirestore
+            .collection("vendors")
+            .doc(item.vendorID)
+            .collection('orders')
+            .add(item.toMap());
+      }).whenComplete(() {
+        cartController.removeCartItem(item);
+        showSnackBar('Order Information', 'Placed Order Successfully.', 2);
+      });
+    }
+  }
 }
